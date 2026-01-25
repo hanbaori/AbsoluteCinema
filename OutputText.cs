@@ -1,70 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using AbsoluteCinema.Commands;
 
 namespace AbsoluteCinema
 {
     class OutputText
     {
         private readonly AppState _appState;
-        private readonly ListOfShow _shows;
-        private readonly List<ConsoleCommand> _consoleCommands;
-        public OutputText(AppState appState)
+        private readonly IUserInterface _consoleUI;
+        private readonly List<ICommand> _consoleCommands;
+        public OutputText(AppState appState, IUserInterface consoleUI)
         {
             _appState = appState;
-            _shows = new ListOfShow(appState);
-            _consoleCommands = new List<ConsoleCommand>
+            _consoleUI = consoleUI;
+            var auth = new AuthorizationUser(_appState, _consoleUI);
+            _consoleCommands = new List<ICommand>
             {
-                new ConsoleCommand(
-                    "Show",
-                    "show list of available shows",
-                    Role.Guest,
-                    () => _shows.ShowList()
-                    ),
-                new ConsoleCommand(
-                    "Reg",
-                    "register to profile",
-                    Role.Guest,
-                    () =>
-                    {
-                        _appState.CurrentUser = ConsoleUserCheck.Register();
-                        Console.WriteLine($"Welcome, {_appState.CurrentUser.Name}");
-                    }),
-                new ConsoleCommand(
-                    "Add",
-                    "add new show",
-                    Role.Admin,
-                    () => _shows.Add()
-                    ),
-                new ConsoleCommand(
-                    "Delete",
-                    "delete a show",
-                    Role.Admin,
-                    () => _shows.Delete()
-                    ),
-                new ConsoleCommand(
-                    "Logout",
-                    "log out of profile",
-                    Role.User,
-                    () =>
-                    {
-                        _appState.CurrentUser = null;
-                        Console.WriteLine("Logged out.");
-                    }),
-            }; ;
+                new ShowListCommand(_appState, _consoleUI),
+                new LogCommand(_appState, _consoleUI, auth),
+                new RegisterCommand(_appState, _consoleUI, auth),
+                new AddShowCommand(_appState, _consoleUI),
+                new DeleteShowCommand(_appState, _consoleUI),
+                new LogoutCommand(_appState, _consoleUI, auth)
+            }; 
         }
 
-        
         public void PrintMenu()
         {
-            Role currentRole = _appState.CurrentUser == null ? Role.Guest : _appState.CurrentUser.Role;
+            Role currentRole = _appState.CurrentUser?.Role ?? Role.Guest;
 
             foreach (var cmd in _consoleCommands)
             {
-                if (currentRole >= cmd.Role)
-                    Console.WriteLine($"{cmd.Key}) - {cmd.Value}");
+                if (currentRole >= cmd.RequiredRole)
+                    _consoleUI.Output($"{cmd.Key}) - {cmd.Description}");
             }
 
-            Console.WriteLine("EXIT) - exit");
+            _consoleUI.Output("EXIT) - exit\n");
         }
 
         public bool CheckString(string input)
@@ -76,20 +47,20 @@ namespace AbsoluteCinema
 
             if (command == null)
             {
-                Console.WriteLine("Unknown command.");
+                _consoleUI.Output("Unknown command.");
                 return true;
             }
 
             Role currentRole =
                 _appState.CurrentUser == null ? Role.Guest : _appState.CurrentUser.Role;
 
-            if (currentRole < command.Role)
+            if (currentRole < command.RequiredRole)
             {
-                Console.WriteLine("Access denied.");
+                _consoleUI.Output("Access denied.");
                 return true;
             }
 
-            command.ConsoleAction();
+            command.Execute();
             return true;
         }
 

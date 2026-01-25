@@ -3,6 +3,7 @@ using System.Collections;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.Commands;
 
 namespace AbsoluteCinema
 {
@@ -14,7 +15,8 @@ namespace AbsoluteCinema
                 "So right now you have options:\n ");
 
             var appState = new AppState();
-            var uiText = new OutputText(appState);
+            var consoleUI = new ConsoleUI();
+            var uiText = new OutputText(appState, consoleUI);
 
             appState.Users.Add(new User("user1", 1));
 
@@ -30,7 +32,7 @@ namespace AbsoluteCinema
             while (check)
             {
                 uiText.PrintMenu();
-                string output = Console.ReadLine();
+                string output = consoleUI.Input();
                 check = uiText.CheckString(output);
             }
 
