@@ -30,7 +30,7 @@ namespace AbsoluteCinema
             foreach (var show in _appState.Shows)
             {
                 _consoleUI.Output(
-                    $"Name: {show.Name}; Description: {show.Description}; Date: {show.DateOfShow}"
+                    $"Name: {show.Name}; Description: {show.Description}; Date: {show.DateOfShow}; Seats: {show.AvailableSeats};"
                 );
             }
         }

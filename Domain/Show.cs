@@ -7,14 +7,14 @@ namespace AbsoluteCinema
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateOfShow { get; set; }
-        public int Seats { get; set; }
+        public int AvailableSeats { get; private set; }
 
         public Show()
         {
             Name = String.Empty;
             Description = String.Empty;
             DateOfShow = String.Empty;
-            Seats = int.MinValue;
+            AvailableSeats = int.MinValue;
         }
 
         public Show(string Name, string Description, string DateOfShow, int Seats)
@@ -22,7 +22,14 @@ namespace AbsoluteCinema
             this.Name = Name;
             this.Description = Description;
             this.DateOfShow = DateOfShow;
-            this.Seats = Seats;
+            this.AvailableSeats = Seats;
+        }
+        public void BookSeats(int count)
+        {
+            if (count <= 0 || count > AvailableSeats)
+                throw new InvalidOperationException("Not enough seats.");
+
+            AvailableSeats -= count;
         }
     }
 }

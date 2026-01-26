@@ -21,14 +21,14 @@ namespace AbsoluteCinema.Commands
 
         public string Key => "Log";
         public string Description => "log into profile";
-        public Role RequiredRole => Role.User;
+        public Role RequiredRole => Role.Guest;
 
         public void Execute()
         {
             try
             {
                 _auth.Log();
-                _consoleUI.Output("Logged out.");
+                _consoleUI.Output($"Welcome, {_appState.CurrentUser.Name}");
             }
             catch (Exception ex)
             {

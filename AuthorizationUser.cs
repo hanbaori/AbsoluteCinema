@@ -26,21 +26,24 @@ namespace AbsoluteCinema
             _consoleUI.Output("Admin? (yes/no)");
             string role = _consoleUI.Input();
 
-            if (role.ToLower() == "yes")
-                return new Admin(name, id);
+            User user = role.ToLower() == "yes" ? new Admin(name, id) : new User(name, id);
 
-            return new User(name, id);
+            _appState.Users.Add(user); 
+
+            return user;
         }
 
         public void Log()
         {
             _consoleUI.Output("Enter name:");
             string name = _consoleUI.Input();
-            var text = _appState.Users.Find(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            if (_appState.Users.Exists(s => s.Name.Equals(text)))
-                _appState.CurrentUser = text;
-            else
-                throw new InvalidOperationException("User with this name doesn`t exists.");
+
+            var user = _appState.Users.FirstOrDefault(u => u.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (user == null)
+                throw new InvalidOperationException("User with this name doesn’t exist.");
+
+            _appState.CurrentUser = user;
         }
         public void Logout()
         {

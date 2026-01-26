@@ -17,10 +17,13 @@ namespace AbsoluteCinema
             _consoleCommands = new List<ICommand>
             {
                 new ShowListCommand(_appState, _consoleUI),
+                new BookSeatsCommand(_appState, _consoleUI),
+                new CheckProfileCommand(_appState, _consoleUI),
                 new LogCommand(_appState, _consoleUI, auth),
                 new RegisterCommand(_appState, _consoleUI, auth),
                 new AddShowCommand(_appState, _consoleUI),
                 new DeleteShowCommand(_appState, _consoleUI),
+                new ShowUsersCommand(_appState, _consoleUI),
                 new LogoutCommand(_appState, _consoleUI, auth)
             }; 
         }
