@@ -39,7 +39,15 @@ namespace AbsoluteCinema
         }
         public string Input()
         {
-            return Console.ReadLine();
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input.Trim();
+
+                Output("Input cannot be empty.", TitleColor.Error);
+            }
         }
     }
 }

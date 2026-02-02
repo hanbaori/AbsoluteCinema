@@ -40,7 +40,14 @@ namespace AbsoluteCinema.Commands
                 return;
             }
 
-            _appState.Shows.Add(new Show(name, desc, date, seats));
+            try
+            {
+                _appState.Shows.Add(new Show(name, desc, date, seats));
+            }
+            catch (Exception ex)
+            {
+                _consoleUI.Output(ex.Message, TitleColor.Error);
+            }
         }
     }
 

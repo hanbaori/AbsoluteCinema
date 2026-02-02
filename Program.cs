@@ -18,7 +18,7 @@ namespace AbsoluteCinema
             var consoleUI = new ConsoleUI();
             var uiText = new OutputText(appState, consoleUI);
 
-            appState.Users.Add(new User("user1", 1));
+            appState.Users.Add(new Admin("user1", 1));
 
             appState.Shows.AddRange(new[]
             {
