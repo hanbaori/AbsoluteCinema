@@ -10,11 +10,11 @@ namespace AbsoluteCinema.Commands
     class BookSeatsCommand : ICommand
     {
         private readonly AppState _appState;
-        private readonly IUserInterface _ui;
-        public BookSeatsCommand(AppState appState, IUserInterface ui)
+        private readonly IUserInterface _consoleUI;
+        public BookSeatsCommand(AppState appState, IUserInterface consoleUI)
         {
             _appState = appState;
-            _ui = ui;
+            _consoleUI = consoleUI;
         }
 
         public string Key => "Book";
@@ -23,25 +23,30 @@ namespace AbsoluteCinema.Commands
 
         public void Execute()
         {
-            _ui.Output("Enter show name:", TitleColor.Title);
-            string name = _ui.Input();
+            _consoleUI.Output("Enter show name:", TitleColor.Title);
+            string name = _consoleUI.Input();
 
             var show = _appState.Shows.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (show == null)
             {
-                _ui.Output("Show not found.", TitleColor.Error);
+                _consoleUI.Output("Show not found.", TitleColor.Error);
                 return;
             }
 
             //тбх тут би реалізувати по номерах букінг, але бебебе
-            _ui.Output("Enter seats count:", TitleColor.Title);
-            int seats = int.Parse(_ui.Input());
+            _consoleUI.Output("Enter seats count:", TitleColor.Title);
+
+            if(!int.TryParse(_consoleUI.Input(), out int seats))
+            {
+                _consoleUI.Output("Invalid seats number.", TitleColor.Error);
+                return;
+            }
 
             show.BookSeats(seats);
             _appState.CurrentUser.Bookings.Add(new Booking(show, seats));
 
-            _ui.Output("Booking successful.", TitleColor.Success);
+            _consoleUI.Output("Booking successful.", TitleColor.Success);
         }
     }
 }

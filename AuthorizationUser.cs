@@ -25,7 +25,10 @@ namespace AbsoluteCinema
             ExistCheck(id);
 
             _consoleUI.Output("Admin? (yes/no)", TitleColor.Title);
-            string role = _consoleUI.Input();
+            string role = _consoleUI.Input().ToLower();
+
+            if(role != "yes" && role != "no")
+                throw new InvalidOperationException("Invalid input.");
 
             User user = role.ToLower() == "yes" ? new Admin(name, id) : new User(name, id);
 
