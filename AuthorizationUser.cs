@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema
 {
@@ -16,14 +17,14 @@ namespace AbsoluteCinema
 
         public User Register()
         {
-            _consoleUI.Output("Enter name:");
+            _consoleUI.Output("Enter name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
-            _consoleUI.Output("Enter id:");
+            _consoleUI.Output("Enter id:", TitleColor.Title);
             int id = int.Parse(_consoleUI.Input());
             ExistCheck(id);
 
-            _consoleUI.Output("Admin? (yes/no)");
+            _consoleUI.Output("Admin? (yes/no)", TitleColor.Title);
             string role = _consoleUI.Input();
 
             User user = role.ToLower() == "yes" ? new Admin(name, id) : new User(name, id);
@@ -35,7 +36,7 @@ namespace AbsoluteCinema
 
         public void Log()
         {
-            _consoleUI.Output("Enter name:");
+            _consoleUI.Output("Enter name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
             var user = _appState.Users.FirstOrDefault(u => u.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -48,7 +49,7 @@ namespace AbsoluteCinema
         public void Logout()
         {
             if (_appState.CurrentUser == null)
-                _consoleUI.Output("No user available");
+                _consoleUI.Output("No user available", TitleColor.Error);
             _appState.CurrentUser = null;
         }
 

@@ -12,7 +12,7 @@ namespace AbsoluteCinema
         static void Main(string[] args)
         {
             Console.WriteLine("This is just simple realisation just to take look on project\n" +
-                "So right now you have options:\n ");
+                "So right now you have options: ");
 
             var appState = new AppState();
             var consoleUI = new ConsoleUI();

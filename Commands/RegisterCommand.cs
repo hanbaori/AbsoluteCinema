@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -28,11 +29,11 @@ namespace AbsoluteCinema.Commands
             try
             {
                 _appState.CurrentUser = _auth.Register();
-                _consoleUI.Output($"Welcome, {_appState.CurrentUser.Name}");
+                _consoleUI.Output($"Welcome, {_appState.CurrentUser.Name}", TitleColor.Success);
             }
             catch (Exception ex)
             {
-                _consoleUI.Output(ex.Message);
+                _consoleUI.Output(ex.Message, TitleColor.Error);
             }
         }
     }

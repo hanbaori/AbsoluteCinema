@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AbsoluteCinema.Commands;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema
 {
@@ -32,25 +33,26 @@ namespace AbsoluteCinema
         {
             Role currentRole = _appState.CurrentUser?.Role ?? Role.Guest;
 
+            _consoleUI.Output("", TitleColor._);
             foreach (var cmd in _consoleCommands)
             {
                 if (currentRole >= cmd.RequiredRole)
-                    _consoleUI.Output($"{cmd.Key}) - {cmd.Description}");
+                    _consoleUI.Output($"{cmd.Key}) - {cmd.Description}", TitleColor.Command);
             }
 
-            _consoleUI.Output("EXIT) - exit\n");
+            _consoleUI.Output("Exit) - exit\n", TitleColor.Command);
         }
 
         public bool CheckString(string input)
         {
-            if (input == "EXIT")
+            if (input.ToLower() == "exit")
                 return false;
 
-            var command = _consoleCommands.Find(c => c.Key == input);
+            var command = _consoleCommands.Find(c => c.Key.ToLower() == input.ToLower());
 
             if (command == null)
             {
-                _consoleUI.Output("Unknown command.");
+                _consoleUI.Output("Unknown command.", TitleColor.Error);
                 return true;
             }
 
@@ -59,7 +61,7 @@ namespace AbsoluteCinema
 
             if (currentRole < command.RequiredRole)
             {
-                _consoleUI.Output("Access denied.");
+                _consoleUI.Output("Access denied.", TitleColor.Error);
                 return true;
             }
 

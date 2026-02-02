@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -23,13 +24,13 @@ namespace AbsoluteCinema.Commands
         {
             if (_appState.Users.Count == 0)
             {
-                _ui.Output("No users found.");
+                _ui.Output("No users found.", TitleColor.Error);
                 return;
             }
 
             foreach (var user in _appState.Users)
             {
-                _ui.Output($"Name: {user.Name}, ID: {user.Id}, Role: {user.Role}");
+                _ui.Output($"Name: {user.Name}, ID: {user.Id}, Role: {user.Role}", TitleColor._);
             }
         }
     }

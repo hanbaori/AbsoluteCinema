@@ -65,6 +65,7 @@
     <Compile Include="Domain\Show.cs" />
     <Compile Include="Commands\ShowListCommand.cs" />
     <Compile Include="Domain\User.cs" />
+    <Compile Include="UI\TitleColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

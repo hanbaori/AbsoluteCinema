@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace AbsoluteCinema.Commands
 {
     using System.Linq;
+    using AbsoluteCinema.UI;
 
     class DeleteShowCommand : ICommand
     {
@@ -24,7 +25,7 @@ namespace AbsoluteCinema.Commands
 
         public void Execute()
         {
-            _consoleUI.Output("Enter show name:");
+            _consoleUI.Output("Enter show name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
             var show = _appState.Shows
@@ -32,12 +33,12 @@ namespace AbsoluteCinema.Commands
 
             if (show == null)
             {
-                _consoleUI.Output("Show not found.");
+                _consoleUI.Output("Show not found.", TitleColor.Error);
                 return;
             }
 
             _appState.Shows.Remove(show);
-            _consoleUI.Output("Show deleted.");
+            _consoleUI.Output("Show deleted.", TitleColor.Success);
         }
     }
 

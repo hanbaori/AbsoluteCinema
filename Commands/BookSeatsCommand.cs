@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -22,25 +23,25 @@ namespace AbsoluteCinema.Commands
 
         public void Execute()
         {
-            _ui.Output("Enter show name:");
+            _ui.Output("Enter show name:", TitleColor.Title);
             string name = _ui.Input();
 
             var show = _appState.Shows.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (show == null)
             {
-                _ui.Output("Show not found.");
+                _ui.Output("Show not found.", TitleColor.Error);
                 return;
             }
 
             //тбх тут би реалізувати по номерах букінг, але бебебе
-            _ui.Output("Enter seats count:");
+            _ui.Output("Enter seats count:", TitleColor.Title);
             int seats = int.Parse(_ui.Input());
 
             show.BookSeats(seats);
             _appState.CurrentUser.Bookings.Add(new Booking(show, seats));
 
-            _ui.Output("Booking successful.");
+            _ui.Output("Booking successful.", TitleColor.Success);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -23,19 +24,19 @@ namespace AbsoluteCinema.Commands
 
         public void Execute()
         {
-            _consoleUI.Output("Enter show name:");
+            _consoleUI.Output("Enter show name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
-            _consoleUI.Output("Enter description:");
+            _consoleUI.Output("Enter description:", TitleColor.Title);
             string desc = _consoleUI.Input();
 
-            _consoleUI.Output("Enter date:");
+            _consoleUI.Output("Enter date:", TitleColor.Title);
             string date = _consoleUI.Input();
 
-            _consoleUI.Output("Enter seats:");
+            _consoleUI.Output("Enter seats:", TitleColor.Title);
             if (!int.TryParse(_consoleUI.Input(), out int seats))
             {
-                _consoleUI.Output("Invalid seats number.");
+                _consoleUI.Output("Invalid seats number.", TitleColor.Error);
                 return;
             }
 

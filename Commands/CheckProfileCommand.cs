@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -23,17 +24,17 @@ namespace AbsoluteCinema.Commands
         {
             var user = _appState.CurrentUser;
 
-            _ui.Output($"User: {user.Name}");
-            _ui.Output("Bookings:");
+            _ui.Output($"User: {user.Name}", TitleColor._);
+            _ui.Output("Bookings:", TitleColor._);
 
             if (user.Bookings.Count == 0)
             {
-                _ui.Output("No bookings yet.");
+                _ui.Output("No bookings yet.", TitleColor.Error);
                 return;
             }
 
             foreach (var b in user.Bookings)
-                _ui.Output($"{b.Show.Name} ({b.Show.DateOfShow}) - seats: {b.Seats}");
+                _ui.Output($"{b.Show.Name} ({b.Show.DateOfShow}) - seats: {b.Seats}", TitleColor._);
         }
     }
 }

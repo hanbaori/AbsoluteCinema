@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema.Commands
 {
@@ -26,7 +27,7 @@ namespace AbsoluteCinema.Commands
         public void Execute()
         {
             _auth.Logout();
-            _consoleUI.Output("Logged out.");
+            _consoleUI.Output("Logged out.", TitleColor.Success);
         }
     }
 
