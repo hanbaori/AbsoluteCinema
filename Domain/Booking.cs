@@ -9,9 +9,9 @@ namespace AbsoluteCinema
     class Booking
     {
         public Show Show { get; }
-        public int Seats { get; }
+        public List<int> Seats { get; }
 
-        public Booking(Show show, int seats)
+        public Booking(Show show, List<int> seats)
         {
             Show = show;
             Seats = seats;

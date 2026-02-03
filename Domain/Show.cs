@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AbsoluteCinema
 {
@@ -7,25 +9,50 @@ namespace AbsoluteCinema
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateOfShow { get; set; }
-        public int AvailableSeats { get; private set; }
-        private const int MAXSEATS = 150;
+        private Dictionary<int, User> _seats = new Dictionary<int, User>();
+        private const int MAXSEATS = 50;
 
-        public Show(string Name, string Description, string DateOfShow, int Seats)
+        public Show(string name, string description, string dateOfShow, int seats)
         {
-            if(Seats > MAXSEATS || Seats <= 0)
-                throw new ArgumentOutOfRangeException(nameof(Seats), $"Seats must be between 1 and {MAXSEATS}.");
+            if(seats > MAXSEATS || seats <= 0)
+                throw new ArgumentOutOfRangeException(nameof(seats), $"Seats must be between 1 and {MAXSEATS}.");
 
-            this.Name = Name;
-            this.Description = Description;
-            this.DateOfShow = DateOfShow;
-            this.AvailableSeats = Seats;
+            this.Name = name;
+            this.Description = description;
+            this.DateOfShow = dateOfShow;
+
+            for(int i = 1; i <= seats; i++)
+            {
+                _seats.Add(i, null);
+            }
         }
-        public void BookSeats(int count)
+        public List<int> GetAvailableSeats()
         {
-            if (count <= 0 || count > AvailableSeats)
-                throw new InvalidOperationException("Not enough seats.");
-
-            AvailableSeats -= count;
+            List<int> list = new List<int>();
+            foreach(var pair in _seats)
+            {
+                if(pair.Value == null)
+                    list.Add(pair.Key);
+            }
+            return list;
+        }
+        public void BookSeats(List<int> seatNumbers, User currentUser)
+        {
+            foreach (var num in seatNumbers)
+            {
+                if (!_seats.ContainsKey(num))
+                    throw new InvalidOperationException($"Seat {num} does not exist.");
+                if (_seats[num] != null)
+                    throw new InvalidOperationException($"Seat {num} is already booked.");
+            }
+            foreach (var num in seatNumbers)
+            {
+                _seats[num] = currentUser;
+            }
+        }
+        public int AvailableSeatsCount()
+        {
+            return _seats.Values.Where(s => s == null).Count();
         }
     }
 }

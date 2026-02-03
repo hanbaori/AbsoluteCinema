@@ -36,18 +36,20 @@ namespace AbsoluteCinema.Commands
             }
 
             //тбх тут би реалізувати по номерах букінг, але бебебе
-            _consoleUI.Output("Enter seats count:", TitleColor.Title);
 
-            if(!int.TryParse(_consoleUI.Input(), out int seats))
-            {
-                _consoleUI.Output("Invalid seats number.", TitleColor.Error);
-                return;
-            }
-            
+            var available = show.GetAvailableSeats();
+            _consoleUI.Output($"Available seats:{string.Join(", ", available)}", TitleColor._);
+
+            _consoleUI.Output("Enter seat numbers:", TitleColor.Title);
+
+            string input = _consoleUI.Input();
+
             try
             {
-                show.BookSeats(seats);
-                _appState.CurrentUser.Bookings.Add(new Booking(show, seats));
+                List<int> selectedSeats = input.Split(',').Select(s => int.Parse(s.Trim())).ToList();
+
+                show.BookSeats(selectedSeats, _appState.CurrentUser);
+                _appState.CurrentUser.Bookings.Add(new Booking(show, selectedSeats));
 
                 _consoleUI.Output("Booking successful.", TitleColor.Success);
             }

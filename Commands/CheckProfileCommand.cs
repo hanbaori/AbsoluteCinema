@@ -34,7 +34,10 @@ namespace AbsoluteCinema.Commands
             }
 
             foreach (var b in user.Bookings)
-                _ui.Output($"{b.Show.Name} ({b.Show.DateOfShow}) - seats: {b.Seats}", TitleColor._);
+            {
+                string seatsList = string.Join(", ", b.Seats);
+                _ui.Output($"{b.Show.Name} ({b.Show.DateOfShow}) - seats: {seatsList}", TitleColor._);
+            }
         }
     }
 }

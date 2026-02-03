@@ -22,10 +22,10 @@ namespace AbsoluteCinema
 
             appState.Shows.AddRange(new[]
             {
-                new Show("show1", "blabla", "21.01", 100),
-                new Show("show2", "blabla", "21.01", 100),
-                new Show("show3", "blabla", "21.01", 100),
-                new Show("show4", "blabla", "21.01", 100),
+                new Show("show1", "blabla", "21.01", 50),
+                new Show("show2", "blabla", "21.01", 50),
+                new Show("show3", "blabla", "21.01", 50),
+                new Show("show4", "blabla", "21.01", 50),
             });
 
             bool check = true;
