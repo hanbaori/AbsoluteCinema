@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace AbsoluteCinema
 {
-    class Booking
+    public class Booking
     {
         public int Id { get; set; }
-        public Show Show { get; }
-        public List<int> Seats { get; }
+        public Show Show { get; set; }
+        public List<int> Seats { get; set; }
 
+        public Booking() { }
         public Booking(Show show, List<int> seats)
         {
             Show = show;

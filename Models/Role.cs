@@ -1,6 +1,6 @@
 ﻿namespace AbsoluteCinema
 {
-    enum Role
+    public enum Role
     {
         Guest,
         User,

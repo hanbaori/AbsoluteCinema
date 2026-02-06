@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AbsoluteCinema
 {
-    class Show
+    public class Show
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,6 +14,7 @@ namespace AbsoluteCinema
         private Dictionary<int, User> _seats = new Dictionary<int, User>();
         private const int MAXSEATS = 50;
 
+        public Show() { }
         public Show(string name, string description, string dateOfShow, int seats)
         {
             if(seats > MAXSEATS || seats <= 0)
