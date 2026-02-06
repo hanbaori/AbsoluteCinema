@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbsoluteCinema.Commands
+namespace AbsoluteCinema.Commands.Commands
 {
     using System.Linq;
+    using AbsoluteCinema.Commands.Interfaces;
     using AbsoluteCinema.UI;
 
     class DeleteShowCommand : ICommand

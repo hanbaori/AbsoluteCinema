@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AbsoluteCinema.Commands;
+using AbsoluteCinema.Commands.Commands;
+using AbsoluteCinema.Commands.Interfaces;
 using AbsoluteCinema.UI;
 
 namespace AbsoluteCinema

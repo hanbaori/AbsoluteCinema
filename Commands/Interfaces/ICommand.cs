@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AbsoluteCinema
+namespace AbsoluteCinema.Commands.Interfaces
 {
     interface ICommand
     {

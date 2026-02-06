@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbsoluteCinema.Commands.Interfaces;
 using AbsoluteCinema.UI;
 
-namespace AbsoluteCinema.Commands
+namespace AbsoluteCinema.Commands.Commands
 {
     class BookSeatsCommand : ICommand
     {

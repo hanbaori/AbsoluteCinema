@@ -6,9 +6,11 @@ namespace AbsoluteCinema
 {
     class Show
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateOfShow { get; set; }
+
         private Dictionary<int, User> _seats = new Dictionary<int, User>();
         private const int MAXSEATS = 50;
 

@@ -8,6 +8,7 @@ namespace AbsoluteCinema
 {
     class Booking
     {
+        public int Id { get; set; }
         public Show Show { get; }
         public List<int> Seats { get; }
 
