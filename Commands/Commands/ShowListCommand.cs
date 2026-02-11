@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AbsoluteCinema.Commands.Interfaces;
 using AbsoluteCinema.UI;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AbsoluteCinema.Commands.Commands
 {
@@ -23,7 +24,7 @@ namespace AbsoluteCinema.Commands.Commands
         public Role RequiredRole => Role.Guest;
         public void Execute()
         {
-            if (_appState.Shows.Count == 0)
+            if (_appState.Shows.IsNullOrEmpty())
             {
                 _consoleUI.Output("No shows available.", TitleColor.Error);
                 return;
@@ -32,7 +33,7 @@ namespace AbsoluteCinema.Commands.Commands
             foreach (var show in _appState.Shows)
             {
                 _consoleUI.Output(
-                    $"Name: {show.Name}; Description: {show.Description}; Date: {show.DateOfShow}; Seats: {show.AvailableSeatsCount()};",
+                    $"Name: {show.Name}; Description: {show.Description}; Date: {show.DateOfShow}; Seats: {show.Seats.Values.Where(s => s == null).Count()};",
                     TitleColor._
                 );
             }

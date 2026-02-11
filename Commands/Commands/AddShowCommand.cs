@@ -44,6 +44,7 @@ namespace AbsoluteCinema.Commands.Commands
             try
             {
                 _appState.Shows.Add(new Show(name, desc, date, seats));
+                _appState.Save();
             }
             catch (Exception ex)
             {

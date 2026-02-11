@@ -11,7 +11,7 @@ namespace AbsoluteCinema
         public int Id { get; set; }
         public Show Show { get; set; }
         public List<int> Seats { get; set; }
-
+        public User User { get; set; }
         public Booking() { }
         public Booking(Show show, List<int> seats)
         {

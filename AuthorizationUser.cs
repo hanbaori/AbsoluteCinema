@@ -20,19 +20,16 @@ namespace AbsoluteCinema
             _consoleUI.Output("Enter name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
-            _consoleUI.Output("Enter id:", TitleColor.Title);
-            int id = int.Parse(_consoleUI.Input());
-            ExistCheck(id);
-
             _consoleUI.Output("Admin? (yes/no)", TitleColor.Title);
             string role = _consoleUI.Input().ToLower();
 
             if(role != "yes" && role != "no")
                 throw new InvalidOperationException("Invalid input.");
 
-            User user = role.ToLower() == "yes" ? new Admin(name, id) : new User(name, id);
+            User user = role.ToLower() == "yes" ? new Admin(name) : new User(name);
 
-            _appState.Users.Add(user); 
+            _appState.Users.Add(user);
+            _appState.Save();
 
             return user;
         }
@@ -42,7 +39,7 @@ namespace AbsoluteCinema
             _consoleUI.Output("Enter name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
-            var user = _appState.Users.FirstOrDefault(u => u.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var user = _appState.Users.FirstOrDefault(u => u.Name.ToLower().Equals(name.ToLower()));
 
             if (user == null)
                 throw new InvalidOperationException("User with this name doesn’t exist.");
@@ -59,12 +56,6 @@ namespace AbsoluteCinema
         public User GetCurrentUser()
         {
             return _appState.CurrentUser;
-        }
-
-        private void ExistCheck(int id)
-        {
-            if (_appState.Users.Any(u => u.Id == id))
-                throw new InvalidOperationException("User with this ID already exists.");
         }
     }
 }

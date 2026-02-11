@@ -30,15 +30,16 @@ namespace AbsoluteCinema.Commands.Commands
             string name = _consoleUI.Input();
 
             var show = _appState.Shows
-                .FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(s => string.Equals(s.Name.ToLower(), name.ToLower()));
 
             if (show == null)
             {
                 _consoleUI.Output("Show not found.", TitleColor.Error);
                 return;
-            }
+            }   
 
             _appState.Shows.Remove(show);
+            _appState.Save();
             _consoleUI.Output("Show deleted.", TitleColor.Success);
         }
     }

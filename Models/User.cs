@@ -9,10 +9,9 @@ namespace AbsoluteCinema
         public virtual Role Role => Role.User;
         public List<Booking> Bookings { get; } = new List<Booking>();
         public User() { }
-        public User(string Name, int Id)
+        public User(string Name)
         {
             this.Name = Name;
-            this.Id = Id;
         }
     }
 }

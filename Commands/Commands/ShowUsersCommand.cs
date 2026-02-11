@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AbsoluteCinema.Commands.Interfaces;
 using AbsoluteCinema.UI;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AbsoluteCinema.Commands.Commands
 {
@@ -23,7 +24,7 @@ namespace AbsoluteCinema.Commands.Commands
 
         public void Execute()
         {
-            if (_appState.Users.Count == 0)
+            if (_appState.Users.IsNullOrEmpty())
             {
                 _ui.Output("No users found.", TitleColor.Error);
                 return;

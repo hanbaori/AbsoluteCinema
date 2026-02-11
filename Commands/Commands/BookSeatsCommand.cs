@@ -25,10 +25,16 @@ namespace AbsoluteCinema.Commands.Commands
 
         public void Execute()
         {
+            if (!_appState.Shows.Any())
+            {
+                _consoleUI.Output("There is no shows right now.", TitleColor.Error);
+                return;
+            }
+
             _consoleUI.Output("Enter show name:", TitleColor.Title);
             string name = _consoleUI.Input();
 
-            var show = _appState.Shows.FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var show = _appState.Shows.FirstOrDefault(s => s.Name.ToLower().Equals(name.ToLower()));
 
             if (show == null)
             {
@@ -36,10 +42,15 @@ namespace AbsoluteCinema.Commands.Commands
                 return;
             }
 
-            //тбх тут би реалізувати по номерах букінг, але бебебе
+            var availableSeats = Enumerable
+                .Range(1, Show.MAXSEATS)
+                .Except(_appState.Bookings
+                    .Where(b => b.Show.Id == show.Id)
+                    .SelectMany(b => b.Seats)
+                    .ToList())
+                .ToList();
 
-            var available = show.GetAvailableSeats();
-            _consoleUI.Output($"Available seats:{string.Join(", ", available)}", TitleColor._);
+            _consoleUI.Output($"Available seats:{string.Join(", ", availableSeats)}", TitleColor._);
 
             _consoleUI.Output("Enter seat numbers:", TitleColor.Title);
 
@@ -47,11 +58,18 @@ namespace AbsoluteCinema.Commands.Commands
 
             try
             {
-                List<int> selectedSeats = input.Split(',').Select(s => int.Parse(s.Trim())).ToList();
+                List<int> selectedSeats = input
+                    .Split(',')
+                    .Select(s => int.Parse(s.Trim()))
+                    .ToList();
 
-                show.BookSeats(selectedSeats, _appState.CurrentUser);
-                _appState.CurrentUser.Bookings.Add(new Booking(show, selectedSeats));
+                var booking = new Booking(show, selectedSeats)
+                {
+                    User = _appState.CurrentUser
+                };
 
+                _appState.Bookings.Add(booking);
+                _appState.Save();
                 _consoleUI.Output("Booking successful.", TitleColor.Success);
             }
             catch (Exception ex)

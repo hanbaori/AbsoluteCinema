@@ -11,8 +11,8 @@ namespace AbsoluteCinema
         public string Description { get; set; }
         public string DateOfShow { get; set; }
 
-        private Dictionary<int, User> _seats = new Dictionary<int, User>();
-        private const int MAXSEATS = 50;
+        public Dictionary<int, User> Seats = new Dictionary<int, User>();
+        public const int MAXSEATS = 50;
 
         public Show() { }
         public Show(string name, string description, string dateOfShow, int seats)
@@ -26,36 +26,8 @@ namespace AbsoluteCinema
 
             for(int i = 1; i <= seats; i++)
             {
-                _seats.Add(i, null);
+                Seats.Add(i, null);
             }
-        }
-        public List<int> GetAvailableSeats()
-        {
-            List<int> list = new List<int>();
-            foreach(var pair in _seats)
-            {
-                if(pair.Value == null)
-                    list.Add(pair.Key);
-            }
-            return list;
-        }
-        public void BookSeats(List<int> seatNumbers, User currentUser)
-        {
-            foreach (var num in seatNumbers)
-            {
-                if (!_seats.ContainsKey(num))
-                    throw new InvalidOperationException($"Seat {num} does not exist.");
-                if (_seats[num] != null)
-                    throw new InvalidOperationException($"Seat {num} is already booked.");
-            }
-            foreach (var num in seatNumbers)
-            {
-                _seats[num] = currentUser;
-            }
-        }
-        public int AvailableSeatsCount()
-        {
-            return _seats.Values.Where(s => s == null).Count();
         }
     }
 }

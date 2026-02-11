@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AbsoluteCinema.Commands.Interfaces;
 using AbsoluteCinema.UI;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbsoluteCinema.Commands.Commands
 {
@@ -23,12 +24,22 @@ namespace AbsoluteCinema.Commands.Commands
 
         public void Execute()
         {
-            var user = _appState.CurrentUser;
+            var user = _appState.Users
+                .Where(u => u.Id == _appState.CurrentUser.Id)
+                .Include(b => b.Bookings)
+                .ThenInclude(b => b.Show)
+                .FirstOrDefault();
+
+            if (user == null)
+            {
+                _ui.Output("User is not found.", TitleColor.Error);
+                return;
+            }
 
             _ui.Output($"User: {user.Name}", TitleColor._);
             _ui.Output("Bookings:", TitleColor._);
 
-            if (user.Bookings.Count == 0)
+            if (!user.Bookings.Any())
             {
                 _ui.Output("No bookings yet.", TitleColor.Error);
                 return;
