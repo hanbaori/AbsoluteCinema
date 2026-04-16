@@ -1,0 +1,6 @@
+@TryOut_HostAddress = http://localhost:5093
+
+GET {{TryOut_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

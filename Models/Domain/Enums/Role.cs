@@ -1,4 +1,4 @@
-﻿namespace AbsoluteCinema
+﻿namespace AbsoluteCinema.Models.Domain.Enums
 {
     public enum Role
     {

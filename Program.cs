@@ -1,33 +1,40 @@
-﻿using System;
-using System.Collections;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using AbsoluteCinema.Commands;
 using AbsoluteCinema.Data;
+using AbsoluteCinema.Mappings;
+using AbsoluteCinema.Repository;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace AbsoluteCinema
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AbsoluteCinemaDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("AbsoluteCinemaConnectionString")));
+
+builder.Services.AddScoped<IShowRepository, SQLShowRepository>();
+
+builder.Services.AddAutoMapper(options =>
+options.AddProfile(new AutoMapperProfiles()));
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("This is just simple realisation just to take look on project\n" +
-                "So right now you have options: ");
-
-            using var db = new AbsoluteCinemaContext();
-            var appState = new AppState(db);
-            var consoleUI = new ConsoleUI();
-            var uiText = new OutputText(appState, consoleUI);
-
-            bool check = true;
-            while (check)
-            {
-                uiText.PrintMenu();
-                string output = consoleUI.Input();
-                check = uiText.CheckString(output);
-            }
-
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
