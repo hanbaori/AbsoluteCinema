@@ -1,5 +1,6 @@
 ﻿using AbsoluteCinema.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using AbsoluteCinema.Models.Domain.Enums;
 
 namespace AbsoluteCinema.Data
 {
@@ -13,13 +14,14 @@ namespace AbsoluteCinema.Data
         public DbSet<User> Users { get; set; }  
         public DbSet<Booking> Bookings { get; set; }
 
-/*        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             var shows = new List<Show>()
             {
                 new Show { Id = Guid.Parse("94d9c9ac-6c5e-4e51-86cc-990405d84583"), Name = "Dune 3", ShowImageUrl = null, ShowDate = new DateTime(2026, 12, 18),
+                    Genres = new List<Genre> { Genre.Adventure }, 
                     Description = "\"No more terrible disaster could befall your people than for them to fall into the hands of a hero\""},
                 new Show { Id = Guid.Parse("7038a7d2-652c-45fb-9160-135b0cd580bf"), Name = "Supergirl", ShowImageUrl = null, ShowDate = new DateTime(2026, 6, 26),
                     Description = "A battle-hardened Kara Zor-El journeys across a harsh universe, forging her own identity as Supergirl while turning pain, loss, and fury into a new kind of hope."},
@@ -37,6 +39,6 @@ namespace AbsoluteCinema.Data
 
             modelBuilder.Entity<Show>().HasData(users);
         }
-*/
+
     }
 }

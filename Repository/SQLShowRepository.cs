@@ -6,29 +6,33 @@ namespace AbsoluteCinema.Repository
 {
     public class SQLShowRepository : IShowRepository
     {
-        private readonly AbsoluteCinemaDbContext dbContext;
+        private readonly AbsoluteCinemaDbContext _dbContext;
 
         public SQLShowRepository(AbsoluteCinemaDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
+        }
+        public async void Save()
+        {
+            await _dbContext.SaveChangesAsync();
         }
         public async Task<List<Show>> GetAllAsync()
         {
-            return await dbContext.Shows.ToListAsync();
+            return await _dbContext.Shows.ToListAsync();
         }
         public async Task<Show?> GetByIdAsync(Guid id)
         {
-            return await dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<Show> CreateAsync(Show show)
         {
-            await dbContext.Shows.AddAsync(show);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.Shows.AddAsync(show);
+            Save();
             return show;
         }
         public async Task<Show?> UpdateAsync(Guid id, Show show)
         {
-            var exisitingShow = await dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
+            var exisitingShow = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
 
             if (exisitingShow == null)
             {
@@ -40,20 +44,20 @@ namespace AbsoluteCinema.Repository
             exisitingShow.ShowDate = show.ShowDate;
             exisitingShow.ShowImageUrl = show.ShowImageUrl;
 
-            await dbContext.SaveChangesAsync();
+            Save();
             return show;
         }
         public async Task<Show?> DeleteAsync(Guid id)
         {
-            var exisitingShow = await dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
+            var exisitingShow = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
 
             if (exisitingShow == null)
             {
                 return null;
             }
 
-            dbContext.Shows.Remove(exisitingShow);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Shows.Remove(exisitingShow);
+            Save();
             return exisitingShow;
         }
     }

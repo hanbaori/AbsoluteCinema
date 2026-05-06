@@ -2,6 +2,7 @@
 using AbsoluteCinema.Models.Domain;
 using AbsoluteCinema.Models.DTO;
 using AbsoluteCinema.Repository;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,137 +13,69 @@ namespace AbsoluteCinema.Controllers
     [ApiController]
     public class ShowController : ControllerBase
     {
-        private readonly AbsoluteCinemaDbContext dbContext;
+        private readonly IShowRepository _showRepository;
+        private readonly IMapper _mapper;
 
-        private readonly IShowRepository showRepository;
-
-        public ShowController(AbsoluteCinemaDbContext dbContext, IShowRepository showRepository)
+        public ShowController(IShowRepository showRepository, IMapper mapper)
         {
-            this.dbContext = dbContext;
-            this.showRepository = showRepository;
+            this._showRepository = showRepository;
+            this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var showsDomain = await showRepository.GetAllAsync();
-
-            var showsDTO = new List<ShowDTO>();
-            foreach (var show in showsDomain)
-            {
-                showsDTO.Add(new ShowDTO
-                {
-                    Id = show.Id,
-                    Name = show.Name,
-                    Description = show.Description,
-                    ShowDate = show.ShowDate,
-                    ShowImageUrl = show.ShowImageUrl
-                });
-            }
-
-
-            
-            return Ok(showsDTO);
+            var showsDomain = await _showRepository.GetAllAsync();
+            return Ok(_mapper.Map<List<ShowDTO>>(showsDomain));
         }
 
-        [HttpGet]
-        [Route("{id:Guid}")]
+        [HttpGet, Route("{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var showDomain = await showRepository.GetByIdAsync(id);
+            var showDomain = await _showRepository.GetByIdAsync(id);
 
             if (showDomain == null)
             {
                 return NotFound();
             }
 
-            var showsDTO = new ShowDTO
-            {
-                Name = showDomain.Name,
-                Description = showDomain.Description,
-                ShowDate = showDomain.ShowDate,
-                ShowImageUrl = showDomain.ShowImageUrl
-            };
-
-            return Ok(showsDTO);
+            return Ok(_mapper.Map<ShowDTO>(showDomain));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateShow([FromBody] RequestShowDTO showRequestDTO)
         {
-            var showDomain = new Show
-            {
-                Name = showRequestDTO.Name,
-                Description = showRequestDTO.Description,
-                ShowDate = showRequestDTO.ShowDate,
-                ShowImageUrl = showRequestDTO.ShowImageUrl
-            };
-            
-            showDomain = await showRepository.CreateAsync(showDomain);
+            var showDomain = await _showRepository.CreateAsync(_mapper.Map<Show>(showRequestDTO));
 
-            var showDTO = new ShowDTO
-            {
-                Id = showDomain.Id,
-                Name = showDomain.Name,
-                Description = showDomain.Description,
-                ShowDate = showDomain.ShowDate,
-                ShowImageUrl = showDomain.ShowImageUrl
-            };
+            var showDTO = _mapper.Map<ShowDTO>(showDomain);
+
             return CreatedAtAction(nameof(GetById), new { id = showDTO.Id }, showDTO);
         }
 
-        [HttpPut]
-        [Route("{id:Guid}")]
+        [HttpPut, Route("{id:Guid}")]
         public async Task<IActionResult> UpdateShow([FromRoute] Guid id, [FromBody] RequestShowDTO showUpdateDTO)
         {
-            var showDomain = new Show
-            {
-                Name = showUpdateDTO.Name,
-                Description = showUpdateDTO.Description,
-                ShowDate = showUpdateDTO.ShowDate,
-                ShowImageUrl = showUpdateDTO.ShowImageUrl
-            };
-
-            showDomain = await showRepository.UpdateAsync(id, showDomain);
+            var showDomain = await _showRepository.UpdateAsync(id, _mapper.Map<Show>(showUpdateDTO));
 
             if (showDomain == null)
             {
                 return NotFound();
             }
 
-            var showDTO = new ShowDTO
-            {
-                Id = showDomain.Id,
-                Name = showDomain.Name,
-                Description = showDomain.Description,
-                ShowDate = showDomain.ShowDate,
-                ShowImageUrl = showDomain.ShowImageUrl
-            };
-
-            return Ok(showDTO); 
+            return Ok(_mapper.Map<ShowDTO>(showDomain)); 
         }
 
-        [HttpDelete]
-        [Route("{id:Guid}")]
+        [HttpDelete, Route("{id:Guid}")]
         public async Task<IActionResult> DeleteShow([FromRoute] Guid id)
         {
-            var showDomain = await showRepository.DeleteAsync(id);
+            var showDomain = await _showRepository.DeleteAsync(id);
             
             if (showDomain == null)
             {
                 return NotFound();
             }
 
-            var showDTO = new ShowDTO
-            {
-                Id = showDomain.Id,
-                Name = showDomain.Name,
-                Description = showDomain.Description,
-                ShowDate = showDomain.ShowDate,
-                ShowImageUrl = showDomain.ShowImageUrl
-            };
-
-            return Ok(showDTO);
+            return Ok(_mapper.Map<ShowDTO>(showDomain));
         }
     }
 }
