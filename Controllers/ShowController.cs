@@ -18,8 +18,8 @@ namespace AbsoluteCinema.Controllers
 
         public ShowController(IShowRepository showRepository, IMapper mapper)
         {
-            this._showRepository = showRepository;
-            this._mapper = mapper;
+            _showRepository = showRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -35,9 +35,7 @@ namespace AbsoluteCinema.Controllers
             var showDomain = await _showRepository.GetByIdAsync(id);
 
             if (showDomain == null)
-            {
                 return NotFound();
-            }
 
             return Ok(_mapper.Map<ShowDTO>(showDomain));
         }

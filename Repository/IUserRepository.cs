@@ -2,7 +2,7 @@
 
 namespace AbsoluteCinema.Repository
 {
-    public interface IShowRepository : IRepository<Show>
+    public interface IUserRepository : IRepository<User>
     {
     }
 }

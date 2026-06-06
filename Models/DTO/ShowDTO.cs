@@ -1,11 +1,15 @@
-﻿namespace AbsoluteCinema.Models.DTO
+﻿using System.ComponentModel.DataAnnotations;
+using AbsoluteCinema.Models.Domain.Enums;
+
+namespace AbsoluteCinema.Models.DTO
 {
     public class ShowDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        [MaxLength(50)] public string Name { get; set; }
+        [MaxLength(500)] public string Description { get; set; }
         public DateTime ShowDate { get; set; }
-        public string? ShowImageUrl { get; set; }
+        [MaxLength(250)] public string? ShowImageUrl { get; set; }
+        public List<Genre> Genres { get; set; }
     }
 }

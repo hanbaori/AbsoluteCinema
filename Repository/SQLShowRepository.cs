@@ -24,41 +24,41 @@ namespace AbsoluteCinema.Repository
         {
             return await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
         }
-        public async Task<Show> CreateAsync(Show show)
+        public async Task<Show> CreateAsync(Show entity)
         {
-            await _dbContext.Shows.AddAsync(show);
+            await _dbContext.Shows.AddAsync(entity);
             Save();
-            return show;
+            return entity;
         }
-        public async Task<Show?> UpdateAsync(Guid id, Show show)
+        public async Task<Show?> UpdateAsync(Guid id, Show entity)
         {
-            var exisitingShow = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
+            var exisitingEntity = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (exisitingShow == null)
+            if (exisitingEntity == null)
             {
                 return null;
             }
 
-            exisitingShow.Name = show.Name;
-            exisitingShow.Description = show.Description;
-            exisitingShow.ShowDate = show.ShowDate;
-            exisitingShow.ShowImageUrl = show.ShowImageUrl;
+            exisitingEntity.Name = entity.Name;
+            exisitingEntity.Description = entity.Description;
+            exisitingEntity.ShowDate = entity.ShowDate;
+            exisitingEntity.ShowImageUrl = entity.ShowImageUrl;
 
             Save();
-            return show;
+            return entity;
         }
         public async Task<Show?> DeleteAsync(Guid id)
         {
-            var exisitingShow = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
+            var exisitingEntity = await _dbContext.Shows.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (exisitingShow == null)
+            if (exisitingEntity == null)
             {
                 return null;
             }
 
-            _dbContext.Shows.Remove(exisitingShow);
+            _dbContext.Shows.Remove(exisitingEntity);
             Save();
-            return exisitingShow;
+            return exisitingEntity;
         }
     }
 }
