@@ -10,8 +10,12 @@ namespace AbsoluteCinema.Mappings
         {
             CreateMap<Show, ShowDTO>().ReverseMap();
             CreateMap<Show, RequestShowDTO>().ReverseMap();
+            
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, RequestUserDTO>().ReverseMap();
 
+            CreateMap<Booking, BookingDTO>().ReverseMap();
+            CreateMap<Booking, RequestBookingDTO>().ReverseMap();
         }
     }
 }

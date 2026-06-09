@@ -52,9 +52,7 @@ namespace AbsoluteCinema.Controllers
             var userDomain = await _userRepository.UpdateAsync(id, _mapper.Map<User>(userUpdateDTO));
 
             if (userDomain == null)
-            {
                 return NotFound();
-            }
 
             return Ok(_mapper.Map<UserDTO>(userDomain));
         }
@@ -65,9 +63,7 @@ namespace AbsoluteCinema.Controllers
             var userDomain = await _userRepository.DeleteAsync(id);
 
             if (userDomain == null)
-            {
                 return NotFound();
-            }
 
             return Ok(_mapper.Map<UserDTO>(userDomain));
         }

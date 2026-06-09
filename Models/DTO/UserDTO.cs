@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AbsoluteCinema.Models.Domain;
 using AbsoluteCinema.Models.Domain.Enums;
 
 namespace AbsoluteCinema.Models.DTO

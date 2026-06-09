@@ -4,6 +4,7 @@ using AbsoluteCinema.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbsoluteCinema.Migrations
 {
     [DbContext(typeof(AbsoluteCinemaDbContext))]
-    partial class AbsoluteCinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260609113426_update booking and user models")]
+    partial class updatebookingandusermodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

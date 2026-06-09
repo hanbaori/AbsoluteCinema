@@ -1,6 +1,8 @@
-﻿namespace AbsoluteCinema.Models.Domain
+﻿using AbsoluteCinema.Models.DTO;
+
+namespace AbsoluteCinema.Models.Domain
 {
-    public class Booking
+    public class BookingDTO
     {
         public Guid Id { get; set; }
         public int BookedSeats { get; set; }
@@ -8,7 +10,7 @@
         public Guid UserId { get; set; }
 
         //Navigation properties
-        public Show Show { get; set; }
-        public User User { get; set; }
+        public ShowDTO Show { get; set; }
+        public UserDTO User { get; set; }
     }
 }

@@ -18,8 +18,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AbsoluteCinemaDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AbsoluteCinemaConnectionString")));
 
-builder.Services.AddScoped<IRepository<Show>, SQLShowRepository>();
-builder.Services.AddScoped<IRepository<User>, SQLUserRepository>();
+builder.Services.AddScoped<IShowRepository, SQLShowRepository>();
+builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
+builder.Services.AddScoped<IBookingRepository, SQLBookingRepository>();
 
 builder.Services.AddAutoMapper(options =>
 options.AddProfile(new AutoMapperProfiles()));

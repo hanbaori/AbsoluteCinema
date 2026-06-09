@@ -12,7 +12,7 @@ namespace AbsoluteCinema.Repository
         {
             this._dbContext = dbContext;
         }
-        public async void Save()
+        public async Task Save()
         {
             await _dbContext.SaveChangesAsync();
         }
@@ -27,7 +27,7 @@ namespace AbsoluteCinema.Repository
         public async Task<User> CreateAsync(User entity)
         {
             await _dbContext.Users.AddAsync(entity);
-            Save();
+            await Save();
             return entity;
         }
         public async Task<User?> UpdateAsync(Guid id, User entity)
@@ -41,8 +41,9 @@ namespace AbsoluteCinema.Repository
 
             exisitingEntity.Name = entity.Name;
             exisitingEntity.Role = entity.Role;
+            exisitingEntity.Bookings = entity.Bookings;
 
-            Save();
+            await Save();
             return entity;
         }
         public async Task<User?> DeleteAsync(Guid id)
@@ -55,7 +56,7 @@ namespace AbsoluteCinema.Repository
             }
 
             _dbContext.Users.Remove(exisitingEntity);
-            Save();
+            await Save();
             return exisitingEntity;
         }
     }
