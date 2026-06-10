@@ -5,10 +5,21 @@ namespace AbsoluteCinema.Models.DTO
 {
     public class RequestShowDTO
     {
-        [MaxLength(50)] public string Name { get; set; }
-        [MaxLength(500)] public string Description { get; set; }
+        [Required, 
+         MaxLength(50)] 
+        public string Name { get; set; }
+
+        [Required,
+         MaxLength(500)] 
+        public string Description { get; set; }
+
+        [Required]
         public DateTime ShowDate { get; set; }
-        [MaxLength(250)] public string? ShowImageUrl { get; set; }
-        public List<Genre> Genres { get; set; }
+
+        [Required,
+         MaxLength(250)] 
+        public string? ShowImageUrl { get; set; }
+
+        public List<Genre>? Genres { get; set; }
     }
 }

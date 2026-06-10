@@ -10,6 +10,6 @@ namespace AbsoluteCinema.Models.Domain
         [MaxLength(500)] public string Description { get; set; }
         public DateTime ShowDate { get; set; }
         [MaxLength(250)] public string? ShowImageUrl { get; set; }
-        public List<Genre> Genres { get; set; }
+        public List<Genre>? Genres { get; set; }
     }
 }

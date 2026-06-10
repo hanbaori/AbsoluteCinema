@@ -6,9 +6,11 @@ namespace AbsoluteCinema.Models.DTO
 {
     public class RequestUserDTO
     {
-        [MaxLength(100)] public string Name { get; set; }
-        public Role Role { get; set; }
+        [Required,
+         MaxLength(100)] 
+        public string Name { get; set; }
 
-        public List<BookingDTO> Bookings { get; set; }
+        [Required]
+        public Role Role { get; set; }
     }
 }
