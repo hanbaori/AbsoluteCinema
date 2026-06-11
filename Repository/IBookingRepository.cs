@@ -4,5 +4,6 @@ namespace AbsoluteCinema.Repository
 {
     public interface IBookingRepository : IRepository<Booking>
     {
+        Task<List<Booking>> GetAllAsync();
     }
 }

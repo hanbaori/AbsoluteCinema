@@ -23,9 +23,16 @@ namespace AbsoluteCinema.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? filterOn, 
+            [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool ascending,
+            [FromQuery] int pagNumber,
+            [FromQuery] int pagSize
+            )
         {
-            var showsDomain = await _showRepository.GetAllAsync();
+            var showsDomain = await _showRepository.GetAllAsync(filterOn, filterQuery, sortBy, ascending, pagNumber, pagSize);
             return Ok(_mapper.Map<List<ShowDTO>>(showsDomain));
         }
 

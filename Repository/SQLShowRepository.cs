@@ -16,9 +16,39 @@ namespace AbsoluteCinema.Repository
         {
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<List<Show>> GetAllAsync()
+        public async Task<List<Show>> GetAllAsync(
+            string? filterOn = null, 
+            string? filterQuery = null,
+            string? sortBy = null,
+            bool ascending = true,
+            int pagNumber = IShowRepository.PAGNUMBER,
+            int pagSize = IShowRepository.PAGNSIZE)
         {
-            return await _dbContext.Shows.ToListAsync();
+            var shows = _dbContext.Shows.AsQueryable();
+
+            //filter
+            if(!(string.IsNullOrWhiteSpace(filterOn)) && !(string.IsNullOrWhiteSpace(filterQuery)))
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    shows = shows.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+
+            //sorting
+            if (!(string.IsNullOrWhiteSpace(sortBy)))
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    shows = ascending ? shows.OrderBy(x => x.Name) : shows.OrderByDescending(x => x.Name);
+                }
+            }
+
+            //pagination
+            var skipPag = (pagNumber - 1) * pagSize;
+
+            return await shows.Skip(skipPag).Take(pagSize).ToListAsync();
         }
         public async Task<Show?> GetByIdAsync(Guid id)
         {
