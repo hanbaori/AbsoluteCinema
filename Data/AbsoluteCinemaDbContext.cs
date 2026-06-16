@@ -6,7 +6,7 @@ namespace AbsoluteCinema.Data
 {
     public class AbsoluteCinemaDbContext : DbContext
     {
-        public AbsoluteCinemaDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public AbsoluteCinemaDbContext(DbContextOptions<AbsoluteCinemaDbContext> dbContextOptions) : base(dbContextOptions)
         {
             
         }
