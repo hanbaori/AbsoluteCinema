@@ -1,4 +1,5 @@
 ﻿using AbsoluteCinema.Models.DTO;
+using AbsoluteCinema.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace AbsoluteCinema.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        public AuthenticationController(UserManager<IdentityUser> userManager)
+        private readonly ITokenRepository _tokenRepository;
+        public AuthenticationController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         [HttpPost, Route("Register")]
@@ -50,7 +53,14 @@ namespace AbsoluteCinema.Controllers
 
                 if(checkPassword)
                 {
-                    return Ok();
+                    var roles = await _userManager.GetRolesAsync(logedUser);
+                    if (roles != null)
+                    {
+                        var jwt = _tokenRepository.CreateToken(logedUser, roles.ToList());
+
+                        var response = new LoginResponseDTO { jwtToken = jwt };
+                        return Ok(response);
+                    }
                 }
             }
 

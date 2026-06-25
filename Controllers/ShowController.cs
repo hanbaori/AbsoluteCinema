@@ -3,6 +3,7 @@ using AbsoluteCinema.Models.Domain;
 using AbsoluteCinema.Models.DTO;
 using AbsoluteCinema.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace AbsoluteCinema.Controllers
             return Ok(_mapper.Map<List<ShowDTO>>(showsDomain));
         }
 
-        [HttpGet, Route("{id:Guid}")]
+        [HttpGet, Route("{id:Guid}"), Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var showDomain = await _showRepository.GetByIdAsync(id);
@@ -47,7 +48,7 @@ namespace AbsoluteCinema.Controllers
             return Ok(_mapper.Map<ShowDTO>(showDomain));
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateShow([FromBody] RequestShowDTO showRequestDTO)
         {
             var showDomain = await _showRepository.CreateAsync(_mapper.Map<Show>(showRequestDTO));
@@ -57,7 +58,7 @@ namespace AbsoluteCinema.Controllers
             return CreatedAtAction(nameof(GetById), new { id = showDTO.Id }, showDTO);
         }
 
-        [HttpPut, Route("{id:Guid}")]
+        [HttpPut, Route("{id:Guid}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateShow([FromRoute] Guid id, [FromBody] RequestShowDTO showUpdateDTO)
         {
             var showDomain = await _showRepository.UpdateAsync(id, _mapper.Map<Show>(showUpdateDTO));
@@ -70,7 +71,7 @@ namespace AbsoluteCinema.Controllers
             return Ok(_mapper.Map<ShowDTO>(showDomain)); 
         }
 
-        [HttpDelete, Route("{id:Guid}")]
+        [HttpDelete, Route("{id:Guid}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteShow([FromRoute] Guid id)
         {
             var showDomain = await _showRepository.DeleteAsync(id);

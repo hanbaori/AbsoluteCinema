@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "AbsoluteCinema", Version = "v1" });
+    
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        Description = "Enter your JWT token"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        { 
+            new OpenApiSecuritySchemeReference("Bearer", document), 
+            new List<string>() 
+        }
+    });
+});
 
 builder.Services.AddDbContext<AbsoluteCinemaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AbsoluteCinemaConnectionString")));
@@ -27,6 +49,7 @@ builder.Services.AddDbContext<AbsoluteCinemaAuthDbContext>(options =>
 builder.Services.AddScoped<IShowRepository, SQLShowRepository>();
 builder.Services.AddScoped<IUserRepository, SQLUserRepository>();
 builder.Services.AddScoped<IBookingRepository, SQLBookingRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAutoMapper(options =>
     options.AddProfile(new AutoMapperProfiles()));
