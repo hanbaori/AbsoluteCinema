@@ -25,10 +25,20 @@ public class BookingController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(
+        [FromQuery] string? filterOn,
+        [FromQuery] string? filterQuery,
+        [FromQuery] string? sortBy,
+        [FromQuery] bool ascending = true,
+        [FromQuery] int pagNumber = 1,
+        [FromQuery] int pagSize = 5)
     {
-        _logger.LogInformation($"{nameof(GetAll)} called");
-        var bookingDomain = await _bookingRepository.GetAllAsync();
+        _logger.LogInformation($"{nameof(GetAll)} called with filterOn: " +
+            $"{filterOn}, filterQuery: {filterQuery}, " +
+            $"sortBy: {sortBy}, ascending: {ascending}, " +
+            $"pagNumber: {pagNumber}, pagSize: {pagSize}");
+
+        var bookingDomain = await _bookingRepository.GetAllAsync(filterOn, filterQuery, sortBy, ascending, pagNumber, pagSize);
         _logger.LogInformation($"{nameof(GetAll)} returned {bookingDomain.Count} bookings");
         return Ok(_mapper.Map<List<BookingDTO>>(bookingDomain));
     }

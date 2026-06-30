@@ -33,10 +33,9 @@ namespace AbsoluteCinema.Controllers
             [FromQuery] string? filterOn, 
             [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy,
-            [FromQuery] bool ascending,
-            [FromQuery] int pagNumber,
-            [FromQuery] int pagSize
-            )
+            [FromQuery] bool ascending = true,
+            [FromQuery] int pagNumber = 1,
+            [FromQuery] int pagSize = 5)
         {
             _logger.LogInformation($"{nameof(GetAll)} called with filterOn: " +
                 $"{filterOn}, filterQuery: {filterQuery}, " +

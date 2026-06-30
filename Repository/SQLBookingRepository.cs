@@ -17,12 +17,43 @@ namespace AbsoluteCinema.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Booking>> GetAllAsync()
+        public async Task<List<Booking>> GetAllAsync(
+                    string? filterOn = null,
+                    string? filterQuery = null,
+                    string? sortBy = null,
+                    bool ascending = true,
+                    int pagNumber = IBookingRepository.PAGNUMBER,
+                    int pagSize = IBookingRepository.PAGNSIZE)
         {
-            return await _dbContext.Bookings
+            var bookings = _dbContext.Bookings
                 .Include("Show")
                 .Include("User")
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!(string.IsNullOrWhiteSpace(filterOn)) && !(string.IsNullOrWhiteSpace(filterQuery)))
+            {
+                if (filterOn.Equals("ShowId", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Guid.TryParse(filterQuery, out var showId))
+                        bookings = bookings.Where(x => x.ShowId == showId);
+                }
+                else if (filterOn.Equals("UserId", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (Guid.TryParse(filterQuery, out var userId))
+                        bookings = bookings.Where(x => x.UserId == userId);
+                }
+            }
+
+            if (!(string.IsNullOrWhiteSpace(sortBy)))
+            {
+                if (sortBy.Equals("BookedSeats", StringComparison.OrdinalIgnoreCase))
+                {
+                    bookings = ascending ? bookings.OrderBy(x => x.BookedSeats) : bookings.OrderByDescending(x => x.BookedSeats);
+                }
+            }
+
+            var skipPag = (pagNumber - 1) * pagSize;
+            return await bookings.Skip(skipPag).Take(pagSize).ToListAsync();
         }
 
         public async Task<Booking?> GetByIdAsync(Guid id)
